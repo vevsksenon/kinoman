@@ -68,6 +68,7 @@
 		
 		var mainArr:Array = new Array(); //Массив с вопросами и ответами
 		var otvetArr:Array = new Array(); //Массив с выбранными ответами
+		//fdfdfdfdf
 		
 		public function Main()
 		{

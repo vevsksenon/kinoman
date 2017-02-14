@@ -68,7 +68,7 @@
 		
 		var mainArr:Array = new Array(); //Массив с вопросами и ответами
 		var otvetArr:Array = new Array(); //Массив с выбранными ответами
-		
+		//Как прошло?
 		public function Main()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, mainInit);

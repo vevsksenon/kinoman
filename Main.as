@@ -113,40 +113,40 @@
 				kartinka = new kadr();
 				kartinka.gotoAndStop(1);
 				kartinka.x = 500;
-				kartinka.y = 210;
+				kartinka.y = 10;
 				gameLayer.addChild(kartinka);
 				uroven = e.target.TF.text;
 				
 				voprosik = new vopros1();
 				voprosik.x = 500;
-				voprosik.y = 470;
+				voprosik.y = 270;
 				gameLayer.addChild(voprosik);
 				voprosik.tft.text = (mainArr[uroven+"_"+vopros][0]);
 				
 				otvetik1 = new otvet();
 				otvetik1.x = 250;
-				otvetik1.y = 595;
+				otvetik1.y = 395;
 				gameLayer.addChild(otvetik1);
 				otvetik1.TF1.mouseEnabled = false;
 				otvetik1.TF1.text = (mainArr[uroven+"_"+vopros][1]);
 				
 				otvetik2 = new otvet();
 				otvetik2.x = 750;
-				otvetik2.y = 595;
+				otvetik2.y = 395;
 				gameLayer.addChild(otvetik2);
 				otvetik2.TF1.mouseEnabled = false;
 				otvetik2.TF1.text = (mainArr[uroven+"_"+vopros][2]);
 				
 				otvetik3 = new otvet();
 				otvetik3.x = 250;
-				otvetik3.y = 730;
+				otvetik3.y = 530;
 				gameLayer.addChild(otvetik3);
 				otvetik3.TF1.mouseEnabled = false;
 				otvetik3.TF1.text = (mainArr[uroven+"_"+vopros][3]);
 				
 				otvetik4 = new otvet();
 				otvetik4.x = 750;
-				otvetik4.y = 730;
+				otvetik4.y = 530;
 				gameLayer.addChild(otvetik4);
 				otvetik4.TF1.mouseEnabled = false;
 				otvetik4.TF1.text = (mainArr[uroven+"_"+vopros][4]);
@@ -342,7 +342,7 @@
 				
 				mainMenuLayer.addChild(level);
 				level.x = 100 + (150*q);
-				level.y = 150 + (150*j);
+				level.y = 160 + (87*j);
 				level.TF.text = i;
 				q++;
 				if (i%5 == 0 && i !==0){
@@ -358,7 +358,7 @@
 			{
 				friendsLayer.addChild(drugObjectArr[i]);
 				drugObjectArr[i].x = ((drugObjectArr[i].width/2)-30) + (drugObjectArr[i].width * i);
-				drugObjectArr[i].y = 690;
+				drugObjectArr[i].y = 490;
 				_step = drugObjectArr[i].width;
 				if (i == drugObjectArr.length){
 					friendsLayer.visible = true;
@@ -372,7 +372,7 @@
 				friendsLayer.addChild(dobav);
 				kol_drug++;
 				dobav.x = ((dobav.width/2)-30) + (dobav.width * u);
-				dobav.y = 690;
+				dobav.y = 490;
 				u++;
             } while (u < 8);
 			sozdanie_strelki();
@@ -382,12 +382,12 @@
 			_strelka_vpravo = new strelka();
 			strelkiLayer.addChild(_strelka_vpravo);
 			_strelka_vpravo.x = 990;
-			_strelka_vpravo.y = 740;
+			_strelka_vpravo.y = 540;
 
 			_strelka_vlevo = new strelka();
 			strelkiLayer.addChild(_strelka_vlevo);
 			_strelka_vlevo.x = 10;
-			_strelka_vlevo.y = 740;
+			_strelka_vlevo.y = 540;
 			_strelka_vlevo.scaleX = -1;
 			_strelka_vlevo.addEventListener(MouseEvent.CLICK, peremotka_druzey_levo);
 			_strelka_vpravo.addEventListener(MouseEvent.CLICK, peremotka_druzey_pravo);
@@ -451,8 +451,8 @@
 		function errFC(data:Object)
 		{
 			mainMenuLayer.addChild(inf_window);
-			inf_window.x = 500;
-			inf_window.y = 400;
+			inf_window.x = stage.stageWidth/2;
+			inf_window.y = stage.stageHeight/2;
 			inf_window.TF.text = ('Ошибка ВК - перезапустите приложение');
 			
 		}
@@ -476,8 +476,8 @@
 		function errFC_fr(data:Object)
 		{
 			mainMenuLayer.addChild(inf_window);
-			inf_window.x = 500;
-			inf_window.y = 400;
+			inf_window.x = stage.stageWidth/2;
+			inf_window.y = stage.stageHeight/2;
 			inf_window.TF.text = ('Ошибка ВК - перезапустите приложение');
 		}
 		function soz_arr(){

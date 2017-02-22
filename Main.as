@@ -81,6 +81,7 @@
 			VK = new APIConnection(flashVars);
 			
 			soz_arr();
+			//Если видишь это у себя дома то значит всё круто )))
 
 
 

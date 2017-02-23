@@ -4,6 +4,7 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.display.Sprite;
+	import flash.display.SimpleButton;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import vk.APIConnection;
@@ -63,8 +64,10 @@
 		var otvetik2;
 		var otvetik3;
 		var otvetik4;
+		var foto_btn:SimpleButton;
 		var uroven;
 		var vopros = 1;
+		
 		
 		var mainArr:Array = new Array(); //Массив с вопросами и ответами
 		var otvetArr:Array = new Array(); //Массив с выбранными ответами
@@ -81,7 +84,7 @@
 			VK = new APIConnection(flashVars);
 			
 			soz_arr();
-			//Если видишь это у себя дома то значит всё круто )))
+			
 
 
 
@@ -111,43 +114,49 @@
 		function start_lvl(e:MouseEvent){
 			if (e.target as levv && e.target.currentFrame == 2 && vopros == 1){
 				hideMainMenu();
+				
+				foto_btn = new fot();
+				foto_btn.x = 100;
+				foto_btn.y = 100;
+				gameLayer.addChild(foto_btn);
+				
 				kartinka = new kadr();
 				kartinka.gotoAndStop(1);
 				kartinka.x = 500;
-				kartinka.y = 10;
+				kartinka.y = kartinka.height/2;
 				gameLayer.addChild(kartinka);
 				uroven = e.target.TF.text;
 				
 				voprosik = new vopros1();
 				voprosik.x = 500;
-				voprosik.y = 270;
+				voprosik.y = kartinka.height + voprosik.height/2 +2;
 				gameLayer.addChild(voprosik);
 				voprosik.tft.text = (mainArr[uroven+"_"+vopros][0]);
 				
 				otvetik1 = new otvet();
 				otvetik1.x = 250;
-				otvetik1.y = 395;
+				otvetik1.y = kartinka.height + voprosik.height + otvetik1.height/2+4;
 				gameLayer.addChild(otvetik1);
 				otvetik1.TF1.mouseEnabled = false;
 				otvetik1.TF1.text = (mainArr[uroven+"_"+vopros][1]);
 				
 				otvetik2 = new otvet();
 				otvetik2.x = 750;
-				otvetik2.y = 395;
+				otvetik2.y = kartinka.height + voprosik.height + otvetik2.height/2+4;
 				gameLayer.addChild(otvetik2);
 				otvetik2.TF1.mouseEnabled = false;
 				otvetik2.TF1.text = (mainArr[uroven+"_"+vopros][2]);
 				
 				otvetik3 = new otvet();
 				otvetik3.x = 250;
-				otvetik3.y = 530;
+				otvetik3.y = kartinka.height + voprosik.height + otvetik3.height + otvetik3.height/2+7;
 				gameLayer.addChild(otvetik3);
 				otvetik3.TF1.mouseEnabled = false;
 				otvetik3.TF1.text = (mainArr[uroven+"_"+vopros][3]);
 				
 				otvetik4 = new otvet();
 				otvetik4.x = 750;
-				otvetik4.y = 530;
+				otvetik4.y = kartinka.height + voprosik.height + otvetik4.height + otvetik4.height/2+7;
 				gameLayer.addChild(otvetik4);
 				otvetik4.TF1.mouseEnabled = false;
 				otvetik4.TF1.text = (mainArr[uroven+"_"+vopros][4]);
@@ -170,10 +179,30 @@
 				 
 				 if (vopros > 5){
 					 //отправка результатов ответов на сервер для подсчёта рейтинга и получения результатов
+					     if (foto_btn.visible == false){
+						 foto_btn.visible = true;
+						 }
+					     gameLayer.removeChild(kartinka);
+						 kartinka = new kadr();
+				         kartinka.gotoAndStop(1);
+				         kartinka.x = 500;
+				         kartinka.y = kartinka.height/2;
+				         gameLayer.addChild(kartinka);
+						 
 					 showMainMenu();					 
 					 gameLayer.visible = false;
 				 }
 				 if (vopros <= 5){
+				     if (foto_btn.visible == false){
+						 foto_btn.visible = true;
+						 
+						 gameLayer.removeChild(kartinka);
+						 kartinka = new kadr();
+				         kartinka.gotoAndStop(1);
+				         kartinka.x = 500;
+				         kartinka.y = kartinka.height/2;
+				         gameLayer.addChild(kartinka);
+					 }
 				 voprosik.tft.text = (mainArr[uroven+"_"+vopros][0]);
 				 otvetik1.TF1.text = (mainArr[uroven+"_"+vopros][1]);
 				 otvetik2.TF1.text = (mainArr[uroven+"_"+vopros][2]);
@@ -185,10 +214,37 @@
 			if (e.target as drug_new){
 				VK.callMethod("showInviteBox");
 			}
+			if (e.target as fot){
+				foto_btn.visible = false;
+				foto_zagruz(mainArr[uroven+"_"+vopros][5]);				
+			}
 		}
 		function initialize(){
 			zapros(_id, _Name, _Family, initialize_fc, initialize_fc_e);
 		}
+		function foto_zagruz(foto){
+			pictLdr = new Loader();
+			var pictURLReq:URLRequest = new URLRequest(foto);
+			pictLdr.load(pictURLReq);
+			pictLdr.contentLoaderInfo.addEventListener(Event.COMPLETE, imgLoaded);
+			pictLdr.contentLoaderInfo.addEventListener(Event.ERROR, imgLoaded_e);
+		}
+		function imgLoaded(e:Event):void
+		{
+			var LDR = (e.currentTarget);
+			LDR.content.x = (-kartinka.width/2) + 30;
+			LDR.content.y = (-kartinka.height/2) + 50;
+			kartinka.addChild(LDR.content);
+			pictLdr.contentLoaderInfo.removeEventListener(Event.COMPLETE, imgLoaded);
+			pictLdr.contentLoaderInfo.removeEventListener(Event.ERROR, imgLoaded_e);
+
+		}
+		function imgLoaded_e(e:Event){
+			//foto(this._foto);
+			pictLdr.contentLoaderInfo.removeEventListener(Event.COMPLETE, imgLoaded);
+			pictLdr.contentLoaderInfo.removeEventListener(Event.ERROR, imgLoaded_e);
+		}
+		
 		function zapros(id_vk:int, p_name:String, p_family:String, COMPLETE:Function , ERROR:Function){ //функция проверки наличия игрока в БД
 			vars = new URLVariables;                                                                                                    
 			vars['id'] = id_vk;
@@ -248,6 +304,13 @@
 			if (e.target as levv){
 				e.target.scaleX = 1.5;
 				e.target.scaleY = 1.5;
+			}
+			if (e.target as fot){
+				inf.TF.text = "Показать фото" + "\n"+ "за 10 монет"  + "\n" + "На некоторые вопросы не ответить без фотографии";
+				inf.visible = true;
+				inf.x = e.target.x;
+				inf.y = e.target.y + 100;
+				inf.alpha = 0.9;
 			}
 			if (e.target as bar){
 				inf.TF.text = "-> Кинобилеты <-" + "\n"+ "За них можно навсегда разблокировать любой уровень";
@@ -482,11 +545,11 @@
 			inf_window.TF.text = ('Ошибка ВК - перезапустите приложение');
 		}
 		function soz_arr(){
-			mainArr["1_1"] = ["Первый вопрос ?", "Первый ответ на первый вопрос", "Второй ответ на первый вопрос", "Третий ответ на первый вопрос", "Четвёртый ответ на первый вопрос", "Ссылка на фото 1"];
-			mainArr["1_2"] = ["Второй вопрос ?", "Первый ответ на второй вопрос", "Второй ответ на второй вопрос", "Третий ответ на второй вопрос", "Четвёртый ответ на второй вопрос", "Ссылка на фото 2"];
-			mainArr["1_3"] = ["Тверий вопрос ?", "Первый ответ на третий вопрос", "Второй ответ на третий вопрос", "Третий ответ на третий вопрос", "Четвёртый ответ на третий вопрос", "Ссылка на фото 3"];
-			mainArr["1_4"] = ["Четвёртый вопрос ?", "Первый ответ на четвёртый вопрос", "Второй ответ на четвёртый вопрос", "Третий ответ на четвёртый вопрос", "Четвёртый ответ на четвёртый вопрос", "Ссылка на фото 4"];
-			mainArr["1_5"] = ["Пятый вопрос ?", "Первый ответ на пятый вопрос", "Второй ответ на пятый вопрос", "Третий ответ на пятый вопрос", "Четвёртый ответ на пятый вопрос", "Ссылка на фото 5"];
+			mainArr["1_1"] = ["Герои какого фильма на фото?", "Друзья", "Форсаж", "Большая разборка", "Теория большого взрыва", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_1.jpg"];
+			mainArr["1_2"] = ["Кадр со съемок какого фильма?", "Клоун", "Монстр", "Оно", "Атракцион", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_2.jpg"];
+			mainArr["1_3"] = ["Кто ходил под гримом в фильме Маска?", "Марлон Брандо", "Джим Керри", "Вэл Килмер", "Джаред Батлер", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_3.jpg"];
+			mainArr["1_4"] = ["Актерский состав какого фильма?", "Пятый элемент", "Убить Билла", "Криминальное Чтиво", "Без Лица", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_4.jpg"];
+			mainArr["1_5"] = ["Этого актера в фильме Мстители Эра Альтрона мы не увидели но слышали его голос. Кто это?", "Крис Хемсворт", "Элизабет Олсен", "Аарон Тейлор-Джонсон", "Джеймс Спейдер", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_5.jpg"];
 		}
 		
 	}

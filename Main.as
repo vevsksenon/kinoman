@@ -67,7 +67,11 @@
 		var foto_btn:SimpleButton;
 		var uroven;
 		var vopros = 1;
-		
+		var _time:MovieClip;
+		var _tmax = 20; //Время на вопрос
+		var _t = _tmax;
+		var _i = 30;
+		var intervalId:uint;
 		
 		var mainArr:Array = new Array(); //Массив с вопросами и ответами
 		var otvetArr:Array = new Array(); //Массив с выбранными ответами
@@ -111,9 +115,30 @@
 
 			this.removeEventListener(Event.ADDED_TO_STAGE, mainInit);
 		}
+		function timer_fc(){
+			_t--;
+			_time.TF.text = (_t);
+			if(_t == 0){
+				vibor();
+			    _t = _tmax;
+			}
+			
+		}
 		function start_lvl(e:MouseEvent){
 			if (e.target as levv && e.target.currentFrame == 2 && vopros == 1){
 				hideMainMenu();
+				
+				_t = _tmax;
+				intervalId = setInterval(timer_fc, 1000);
+				_time = new Time();
+				_time.x = 900;
+				_time.y = 100;
+				_time.scaleX = 3;
+				_time.scaleY = 3;
+				gameLayer.addChild(_time);
+				_time.TF.text = (_t);
+				
+				
 				
 				foto_btn = new fot();
 				foto_btn.x = 100;
@@ -174,7 +199,58 @@
 			}
 			if (e.target as otvet){
 				 
+				 _t = _tmax;
+				 _time.TF.text = (_t);
 				 otvetArr[vopros] = e.target.TF1.text;
+				 vopros++;
+				 
+				 if (vopros > 5){
+					 //отправка результатов ответов на сервер для подсчёта рейтинга и получения результатов
+					     if (foto_btn.visible == false){
+						 foto_btn.visible = true;
+						 }
+					     gameLayer.removeChild(kartinka);
+						 kartinka = new kadr();
+				         kartinka.gotoAndStop(1);
+				         kartinka.x = 500;
+				         kartinka.y = kartinka.height/2;
+				         gameLayer.addChild(kartinka);
+						 
+					 showMainMenu();					 
+					 gameLayer.visible = false;
+					 clearInterval(intervalId);
+				 }
+				 if (vopros <= 5){
+				     if (foto_btn.visible == false){
+						 foto_btn.visible = true;
+						 
+						 gameLayer.removeChild(kartinka);
+						 kartinka = new kadr();
+				         kartinka.gotoAndStop(1);
+				         kartinka.x = 500;
+				         kartinka.y = kartinka.height/2;
+				         gameLayer.addChild(kartinka);
+					 }
+				 voprosik.tft.text = (mainArr[uroven+"_"+vopros][0]);
+				 otvetik1.TF1.text = (mainArr[uroven+"_"+vopros][1]);
+				 otvetik2.TF1.text = (mainArr[uroven+"_"+vopros][2]);
+				 otvetik3.TF1.text = (mainArr[uroven+"_"+vopros][3]);
+				 otvetik4.TF1.text = (mainArr[uroven+"_"+vopros][4]);
+				 }
+				 
+			}
+			if (e.target as drug_new){
+				VK.callMethod("showInviteBox");
+			}
+			if (e.target as fot){
+				foto_btn.visible = false;
+				foto_zagruz(mainArr[uroven+"_"+vopros][5]);				
+			}
+		}
+		function vibor(){
+			
+				 _time.TF.text = (_t);
+				 //неправильный ответ отправить на сервер
 				 vopros++;
 				 
 				 if (vopros > 5){
@@ -210,14 +286,7 @@
 				 otvetik4.TF1.text = (mainArr[uroven+"_"+vopros][4]);
 				 }
 				 
-			}
-			if (e.target as drug_new){
-				VK.callMethod("showInviteBox");
-			}
-			if (e.target as fot){
-				foto_btn.visible = false;
-				foto_zagruz(mainArr[uroven+"_"+vopros][5]);				
-			}
+		
 		}
 		function initialize(){
 			zapros(_id, _Name, _Family, initialize_fc, initialize_fc_e);

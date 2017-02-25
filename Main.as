@@ -130,12 +130,15 @@
 				
 				_t = _tmax;
 				intervalId = setInterval(timer_fc, 1000);
-				_time = new Time();
-				_time.x = 900;
-				_time.y = 100;
-				_time.scaleX = 3;
-				_time.scaleY = 3;
-				gameLayer.addChild(_time);
+					_time = new Time();
+					_time.x = 900;
+				    _time.y = 100;
+				    _time.scaleX = 3;
+				    _time.scaleY = 3;
+				    gameLayer.addChild(_time);
+				
+				
+				
 				_time.TF.text = (_t);
 				
 				
@@ -195,7 +198,9 @@
 				otvetik2.TF1.text = (mainArr[uroven+"_"+vopros][2]);
 				otvetik3.TF1.text = (mainArr[uroven+"_"+vopros][3]);
 				otvetik4.TF1.text = (mainArr[uroven+"_"+vopros][4]);
-				
+				_t = _tmax;
+				intervalId = setInterval(timer_fc, 1000);
+				_time.TF.text = (_t);
 			}
 			if (e.target as otvet){
 				 

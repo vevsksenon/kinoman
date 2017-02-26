@@ -191,6 +191,7 @@
 			}
 			if (e.target as levv && e.target.currentFrame == 2 && vopros !== 1){
 				vopros = 1;
+				uroven = e.target.TF.text;
 				hideMainMenu();
 				gameLayer.visible = true;
 				voprosik.tft.text = (mainArr[uroven+"_"+vopros][0]);

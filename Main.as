@@ -249,7 +249,7 @@
 			if (e.target as drug_new){
 				VK.callMethod("showInviteBox");
 			}
-			if (e.target as fot){
+			if (e.target as fot && bar_gold.TF.text >= 10){
 				foto_btn.visible = false;
 				foto_zagruz(mainArr[uroven+"_"+vopros][5]);				
 			}
@@ -311,6 +311,7 @@
 			LDR.content.x = (-kartinka.width/2) + 30;
 			LDR.content.y = (-kartinka.height/2) + 50;
 			kartinka.addChild(LDR.content);
+			foto_zapros(_id, foto_fc, foto_fc_e);
 			pictLdr.contentLoaderInfo.removeEventListener(Event.COMPLETE, imgLoaded);
 			pictLdr.contentLoaderInfo.removeEventListener(Event.ERROR, imgLoaded_e);
 
@@ -348,6 +349,33 @@
 			inf_window.x = 500;
 			inf_window.y = 400;
 			inf_window.TF.text = ("Ошибка соединения с БД перезапустите приложение");
+			loader.removeEventListener(Event.COMPLETE, COMPLETE);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+		}
+		function foto_zapros(id_vk:int, COMPLETE:Function , ERROR:Function){ //функция списания денег с пользователя за открытие фото
+			vars = new URLVariables;                                                                                                    
+			vars['id'] = id_vk;
+			
+			request = new URLRequest("http://vevsksenon.xyz/kinoman/PHP/foto.php"); //путь к скрипту списания денег с пользователя за открытие фото
+			request.method = URLRequestMethod.POST;
+			request.data = vars;
+			
+			loader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, COMPLETE);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, ERROR);
+			loader.load(request);
+		}
+		function foto_fc(event:Event){
+			
+			 bar_gold.TF.text = event.target.data;
+			 loader.removeEventListener(Event.COMPLETE, COMPLETE);
+			 loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+		}
+		function foto_fc_e(event:Event){
+			mainMenuLayer.addChild(inf_window);
+			inf_window.x = 500;
+			inf_window.y = 400;
+			inf_window.TF.text = ("Ошибка соединения с БД");
 			loader.removeEventListener(Event.COMPLETE, COMPLETE);
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
 		}

@@ -34,6 +34,7 @@
 		var friendsLayer:Sprite = new Sprite();//слой с иконками друзей
 		var strelkiLayer:Sprite = new Sprite();//слой для стрелок перемотки друзей
 		var gameLayer:Sprite = new Sprite();//слой для игры
+		var lvl_layer:Sprite = new Sprite();//Слой для уровней
 		var flashVars:Object;
 		public static var VK:APIConnection;//Объекты ВК 
 		var _Name:String;//переменная с именем пользователя
@@ -145,12 +146,12 @@
 				
 				foto_btn = new fot();
 				foto_btn.x = 100;
-				foto_btn.y = 100;
+				foto_btn.y = 130;
 				gameLayer.addChild(foto_btn);
 				
 				kartinka = new kadr();
 				kartinka.gotoAndStop(1);
-				kartinka.x = 500;
+				kartinka.x = 600;
 				kartinka.y = kartinka.height/2;
 				gameLayer.addChild(kartinka);
 				uroven = e.target.TF.text;
@@ -218,7 +219,7 @@
 					     gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 500;
+				         kartinka.x = 600;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 						 
@@ -233,7 +234,7 @@
 						 gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 500;
+				         kartinka.x = 600;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 					 }
@@ -267,7 +268,7 @@
 					     gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 500;
+				         kartinka.x = 600;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 						 
@@ -281,7 +282,7 @@
 						 gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 500;
+				         kartinka.x = 600;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 					 }
@@ -348,7 +349,7 @@
 			inf_window.y = 400;
 			inf_window.TF.text = ("Ошибка соединения с БД перезапустите приложение");
 			loader.removeEventListener(Event.COMPLETE, COMPLETE);
-			 loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
 		}
 		function update_bar(){
 			bar_gold.TF.text = ResultArr[0];
@@ -435,22 +436,22 @@
 			mainMenuLayer.addChild(bar_ticket);
 			mainMenuLayer.addChild(bar_reit);
 			mainMenuLayer.addChild(bar_lvl);
-			
-			
 			mainMenuLayer.addChild(_txt);
+			mainMenuLayer.addChild(lvl_layer);
+			
 			_txt.x = 400;
 			_txt.y = 400;
 			_txt.visible = false;
 
 
-			back.x = stage.stageHeight / 2;
-			back.y = stage.stageWidth / 2 - 50;
-			back.alpha = 0.6;
-			back.scaleX = 0.6;
-			back.scaleY = 0.6;
+			back.x = stage.stageWidth / 2;
+			back.y = stage.stageHeight / 2;
+			back.alpha = 0.7;
+			back.scaleX = 0.45;
+			back.scaleY = 0.45;
 
 
-			bar_gold.x = 130;
+			bar_gold.x = 100;
 			bar_gold.y = 50;
 			bar_gold.TF.mouseEnabled = false;
 			bar_ticket.x = 350;
@@ -479,7 +480,7 @@
 					
 				}
 				
-				mainMenuLayer.addChild(level);
+				lvl_layer.addChild(level);
 				level.x = 100 + (150*q);
 				level.y = 160 + (87*j);
 				level.TF.text = i;
@@ -556,14 +557,24 @@
 		}
 		function hideMainMenu()
 		{
-			    mainMenuLayer.visible = false;
+			    
+				
+			   
+			    bar_ticket.visible = false;
+			    bar_reit.visible = false;
+			    bar_lvl.visible = false;
+			    lvl_layer.visible = false;
 				friendsLayer.visible = false;
 				strelkiLayer.visible = false;
 				inf.visible = false;
+				bar_gold.visible = true;
 		}
 		function showMainMenu()
 		{
-			    mainMenuLayer.visible = true;
+			    bar_ticket.visible = true;
+			    bar_reit.visible = true;
+			    bar_lvl.visible = true;
+			    lvl_layer.visible = true;
 				friendsLayer.visible = true;
 				strelkiLayer.visible = true;
 				inf.visible = true;

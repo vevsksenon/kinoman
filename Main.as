@@ -151,7 +151,7 @@
 				
 				kartinka = new kadr();
 				kartinka.gotoAndStop(1);
-				kartinka.x = 600;
+				kartinka.x = 500;
 				kartinka.y = kartinka.height/2;
 				gameLayer.addChild(kartinka);
 				uroven = e.target.TF.text;
@@ -219,7 +219,7 @@
 					     gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 600;
+				         kartinka.x = 500;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 						 
@@ -234,7 +234,7 @@
 						 gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 600;
+				         kartinka.x = 500;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 					 }
@@ -268,7 +268,7 @@
 					     gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 600;
+				         kartinka.x = 500;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 						 
@@ -282,7 +282,7 @@
 						 gameLayer.removeChild(kartinka);
 						 kartinka = new kadr();
 				         kartinka.gotoAndStop(1);
-				         kartinka.x = 600;
+				         kartinka.x = 500;
 				         kartinka.y = kartinka.height/2;
 				         gameLayer.addChild(kartinka);
 					 }
@@ -451,7 +451,7 @@
 			back.scaleY = 0.45;
 
 
-			bar_gold.x = 100;
+			bar_gold.x = 110;
 			bar_gold.y = 50;
 			bar_gold.TF.mouseEnabled = false;
 			bar_ticket.x = 350;

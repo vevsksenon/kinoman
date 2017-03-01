@@ -53,6 +53,7 @@
 		var _strelka_vlevo;
 		var inf = new info_bro();
 		var inf_window = new information();
+		var game_work:Boolean = true;
 		
 		var _txt = new tete();
 		//игровые переменные
@@ -117,16 +118,19 @@
 			this.removeEventListener(Event.ADDED_TO_STAGE, mainInit);
 		}
 		function timer_fc(){
-			_t--;
+			if (game_work == true){
+				_t--;
 			_time.TF.text = (_t);
 			if(_t == 0){
 				vibor();
 			    _t = _tmax;
 			}
+			}
+			
 			
 		}
 		function start_lvl(e:MouseEvent){
-			if (e.target as levv && e.target.currentFrame == 2 && vopros == 1){
+			if (e.target as levv && e.target.currentFrame == 2 && vopros == 1 && game_work == true){
 				hideMainMenu();
 				
 				_t = _tmax;
@@ -190,7 +194,7 @@
 				otvetik4.TF1.mouseEnabled = false;
 				otvetik4.TF1.text = (mainArr[uroven+"_"+vopros][4]);
 			}
-			if (e.target as levv && e.target.currentFrame == 2 && vopros !== 1){
+			if (e.target as levv && e.target.currentFrame == 2 && vopros !== 1 && game_work == true){
 				vopros = 1;
 				uroven = e.target.TF.text;
 				hideMainMenu();
@@ -204,14 +208,14 @@
 				intervalId = setInterval(timer_fc, 1000);
 				_time.TF.text = (_t);
 			}
-			if (e.target as otvet){
+			if (e.target as otvet && game_work == true){
 				 
 				 _t = _tmax;
 				 _time.TF.text = (_t);
 				 otvetArr[vopros] = e.target.TF1.text;
 				 vopros++;
 				 
-				 if (vopros > 5){
+				 if (vopros > 5 && game_work == true){
 					 //отправка результатов ответов на сервер для подсчёта рейтинга и получения результатов
 					     if (foto_btn.visible == false){
 						 foto_btn.visible = true;
@@ -227,7 +231,7 @@
 					 gameLayer.visible = false;
 					 clearInterval(intervalId);
 				 }
-				 if (vopros <= 5){
+				 if (vopros <= 5 && game_work == true){
 				     if (foto_btn.visible == false){
 						 foto_btn.visible = true;
 						 
@@ -246,12 +250,12 @@
 				 }
 				 
 			}
-			if (e.target as drug_new){
+			if (e.target as drug_new && game_work == true){
 				VK.callMethod("showInviteBox");
 			}
-			if (e.target as fot && bar_gold.TF.text >= 10){
+			if (e.target as fot && bar_gold.TF.text >= 10 && game_work == true){
 				foto_btn.visible = false;
-				foto_zagruz(mainArr[uroven+"_"+vopros][5]);				
+				foto_zapros(_id, foto_fc, foto_fc_e);
 			}
 		}
 		function vibor(){
@@ -262,7 +266,7 @@
 				 
 				 if (vopros > 5){
 					 //отправка результатов ответов на сервер для подсчёта рейтинга и получения результатов
-					     if (foto_btn.visible == false){
+					     if (foto_btn.visible == false && game_work == true){
 						 foto_btn.visible = true;
 						 }
 					     gameLayer.removeChild(kartinka);
@@ -275,7 +279,7 @@
 					 showMainMenu();					 
 					 gameLayer.visible = false;
 				 }
-				 if (vopros <= 5){
+				 if (vopros <= 5 && game_work == true){
 				     if (foto_btn.visible == false){
 						 foto_btn.visible = true;
 						 
@@ -311,7 +315,6 @@
 			LDR.content.x = (-kartinka.width/2) + 30;
 			LDR.content.y = (-kartinka.height/2) + 50;
 			kartinka.addChild(LDR.content);
-			foto_zapros(_id, foto_fc, foto_fc_e);
 			pictLdr.contentLoaderInfo.removeEventListener(Event.COMPLETE, imgLoaded);
 			pictLdr.contentLoaderInfo.removeEventListener(Event.ERROR, imgLoaded_e);
 
@@ -347,8 +350,9 @@
 		function initialize_fc_e(event:Event){
 			mainMenuLayer.addChild(inf_window);
 			inf_window.x = 500;
-			inf_window.y = 400;
-			inf_window.TF.text = ("Ошибка соединения с БД перезапустите приложение");
+			inf_window.y = 300;
+			inf_window.TF.text = ("Ошибка соединения с БД , перезапустите приложение и проверьте наличие Интернета");
+			game_work = false;
 			loader.removeEventListener(Event.COMPLETE, COMPLETE);
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
 		}
@@ -366,16 +370,26 @@
 			loader.load(request);
 		}
 		function foto_fc(event:Event){
-			
-			 bar_gold.TF.text = event.target.data;
+			 if (event.target.data == "Списание не удалось"){
+				mainMenuLayer.addChild(inf_window);
+			    inf_window.x = 500;
+			    inf_window.y = 300;
+			    inf_window.TF.text = ("Ошибка при работе с БД, перезапустите приложение и проверьте наличие Интернета");
+				game_work = false;
+			 }
+			 else {
+				 bar_gold.TF.text = event.target.data;
+				 foto_zagruz(mainArr[uroven+"_"+vopros][5]);
+			 }
 			 loader.removeEventListener(Event.COMPLETE, COMPLETE);
 			 loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
 		}
 		function foto_fc_e(event:Event){
 			mainMenuLayer.addChild(inf_window);
 			inf_window.x = 500;
-			inf_window.y = 400;
-			inf_window.TF.text = ("Ошибка соединения с БД");
+			inf_window.y = 300;
+			inf_window.TF.text = ("Ошибка соединения с БД , перезапустите приложение и проверьте наличие Интернета");
+			game_work = false;
 			loader.removeEventListener(Event.COMPLETE, COMPLETE);
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
 		}
@@ -389,7 +403,7 @@
 		}
 		function info_over(e:MouseEvent)
 		{
-			if (e.target as drug && e.target.fc_id() !== null)
+			if (e.target as drug && e.target.fc_id() !== null && game_work == true)
 			{
 					inf.TF.text = e.target.fc_in();
 				    inf.visible = true;
@@ -398,46 +412,46 @@
 				    inf.alpha = 0.9;
 				
 			}
-			if (e.target as drug_new){
+			if (e.target as drug_new && game_work == true){
 				inf.TF.text = "Пригласить друзей" + "\n"+ "\n" + "Чем больше тем лучше =)";
 				inf.visible = true;
 				inf.x = e.target.x + (e.target.width/2-10) - (e.target.width*tek_pol);
 				inf.y = e.target.y - (e.target.width/2-1);
 				inf.alpha = 0.9;
 			}
-			if (e.target as levv){
+			if (e.target as levv && game_work == true){
 				e.target.scaleX = 1.5;
 				e.target.scaleY = 1.5;
 			}
-			if (e.target as fot){
+			if (e.target as fot && game_work == true){
 				inf.TF.text = "Показать фото" + "\n"+ "за 10 монет"  + "\n" + "На некоторые вопросы не ответить без фотографии";
 				inf.visible = true;
 				inf.x = e.target.x;
 				inf.y = e.target.y + 100;
 				inf.alpha = 0.9;
 			}
-			if (e.target as bar){
+			if (e.target as bar && game_work == true){
 				inf.TF.text = "-> Кинобилеты <-" + "\n"+ "За них можно навсегда разблокировать любой уровень";
 				inf.visible = true;
 				inf.x = e.target.x;
 				inf.y = e.target.y + 83;
 				inf.alpha = 0.9;
 			}
-			if (e.target as bar2){
+			if (e.target as bar2 && game_work == true){
 				inf.TF.text = "-> Золото <-" + "\n"+ "Снимается каждый раз когда вы отвечаете на вопросы";
 				inf.visible = true;
 				inf.x = e.target.x;
 				inf.y = e.target.y + 83;
 				inf.alpha = 0.9;
 			}
-			if (e.target as bar3){
+			if (e.target as bar3 && game_work == true){
 				inf.TF.text = "-> Открытые уровни <-" + "\n"+ "Количество разблокированых уровней";
 				inf.visible = true;
 				inf.x = e.target.x;
 				inf.y = e.target.y + 83;
 				inf.alpha = 0.9;
 			}
-			if (e.target as bar4){
+			if (e.target as bar4 && game_work == true){
 				inf.TF.text = "-> Рейтинг <-" + "\n"+ "Чем больше правильных ответов тем больше рейтинг";
 				inf.visible = true;
 				inf.x = e.target.x;
@@ -448,7 +462,7 @@
 		}
 		function info_out(e:MouseEvent)
 		{
-			if (e.target as levv){
+			if (e.target as levv && game_work == true){
 				e.target.scaleX = 1;
 				e.target.scaleY = 1;
 				
@@ -629,9 +643,10 @@
 		function errFC(data:Object)
 		{
 			mainMenuLayer.addChild(inf_window);
-			inf_window.x = stage.stageWidth/2;
-			inf_window.y = stage.stageHeight/2;
-			inf_window.TF.text = ('Ошибка ВК - перезапустите приложение');
+			inf_window.x = 500;
+			inf_window.y = 300;
+			inf_window.TF.text = ('Ошибка ВК - перезапустите приложение и проверьте наличие Интернета');
+			game_work = false;
 			
 		}
 		function compFC_fr(data:Object)
@@ -654,9 +669,10 @@
 		function errFC_fr(data:Object)
 		{
 			mainMenuLayer.addChild(inf_window);
-			inf_window.x = stage.stageWidth/2;
-			inf_window.y = stage.stageHeight/2;
-			inf_window.TF.text = ('Ошибка ВК - перезапустите приложение');
+			inf_window.x = 500;
+			inf_window.y = 300;
+			inf_window.TF.text = ('Ошибка ВК - перезапустите приложение и проверьте наличие Интернета');
+			game_work = false;
 		}
 		function soz_arr(){
 			mainArr["1_1"] = ["Герои какого фильма на фото?", "Друзья", "Форсаж", "Большая разборка", "Теория большого взрыва", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_1.jpg"];

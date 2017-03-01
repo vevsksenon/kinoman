@@ -38,14 +38,21 @@ if (!$ID_VK){
 	
 	$q="SELECT gold FROM item where id in ('$ID_VK')";
 	$result1 = mysqli_query($link,$z);
-	
-    $result = mysqli_query($link,$q);
-	    while ($rows = mysqli_fetch_row($result)) {
-                  echo $rows[0];
+	if ($result1){
+		$result = mysqli_query($link,$q);
+		$row = mysqli_fetch_row($result);
+		echo $row[0];
+	}
+	else {
+		echo "Списание не удалось";
+	}
+    /*$result = mysqli_query($link,$q);
+	    while ($row = mysqli_fetch_row($result)) {
+                  echo $row[0];
                 
 		    }
         		
-           
+         */  
 
 mysqli_close($link);
 ?>

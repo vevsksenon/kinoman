@@ -39,7 +39,7 @@ if (!$ID_VK && !$NAME && !$FAMILY){
 	$q="SELECT vk_id FROM player where vk_id in ('$ID_VK')";
 	$z="insert into player(vk_id,name,Family) values ('$ID_VK', '$NAME', '$FAMILY')"; //Создание нового пользователя
 	$zz="insert into item(id,gold,ticket,lvl) values ('$ID_VK', 200, 5, 1)"; //Создание нового начального капитала
-	$zzz="insert into reiting(id,lvl,reit) values ('$ID_VK', 0, 0)"; //Создание нулевого рейтинга
+	$zzz="insert into reiting(id,reit) values ('$ID_VK', 0)"; //Создание нулевого рейтинга
 	$qq="SELECT gold,ticket,lvl FROM item where id in ('$ID_VK')";
 	$rei = "SELECT SUM(reit) FROM `reiting` WHERE id = ('$ID_VK')";
     $result = mysqli_query($link,$q);

@@ -44,6 +44,7 @@
 		var drugArr:Array = new Array();//массив с айдишниками друзей
 		var drugObjectArr:Array = new Array();//массив со ссылками на объекты друзей
 		var ResultArr:Array = new Array();//Массив с накоплениями
+		var lvl_Arr:Array = new Array();//Массив иконок уровней
 
 		var _step = 120;// ширина на которую будет двигаться лента друзей
 		var kol_drug = 0;//количество друзей для ограничения передвижения ленты друзей
@@ -57,7 +58,7 @@
 		
 		var _txt = new tete();
 		//игровые переменные
-		static var lvl_Array:Array = new Array("0","100","250","450","700","1350","1850","2300");
+		//static var lvl_Array1:Array = new Array("0","100","250","450","700","1350","1850","2300");
 		var lvl_player:uint;
 		var tek_target;
 		var kartinka:MovieClip;
@@ -216,6 +217,7 @@
 				 vopros++;
 				 
 				 if (vopros > 5 && game_work == true){
+					 proverka_lvl();
 					 //отправка результатов ответов на сервер для подсчёта рейтинга и получения результатов
 					     if (foto_btn.visible == false){
 						 foto_btn.visible = true;
@@ -512,25 +514,33 @@
 			for (var i = 1; i <= 20 ; i++){
 				
 				var level = new levv();
-				level.TF.mouseEnabled = false;
+				lvl_Arr.push(level);
+				lvl_Arr[i-1].id = i;
 				if (lvl_player >= i){
-					level.gotoAndStop(2);
-					level.TF.mouseEnabled = false;
+					lvl_Arr[i-1].gotoAndStop(2);
+					lvl_Arr[i-1].TF.mouseEnabled = false;
 				}
 				if (lvl_player < i){
-					level.gotoAndStop(1);
-					
+					lvl_Arr[i-1].gotoAndStop(1);
+					lvl_Arr[i-1].TF.mouseEnabled = false;
 				}
 				
-				lvl_layer.addChild(level);
-				level.x = 100 + (150*q);
-				level.y = 160 + (87*j);
-				level.TF.text = i;
+				lvl_layer.addChild(lvl_Arr[i-1]);
+				lvl_Arr[i-1].x = 100 + (150*q);
+				lvl_Arr[i-1].y = 160 + (87*j);
+				lvl_Arr[i-1].TF.text = i;
 				q++;
 				if (i%5 == 0 && i !==0){
 					j++;
 					q=0;
 				}
+			}
+		}
+		function proverka_lvl(){
+			for (var i = 1; i <= lvl_player; i++){
+				lvl_Arr[i-1].gotoAndStop(2);
+				lvl_Arr[i-1].TF.mouseEnabled = false;
+				lvl_Arr[i-1].TF.text = lvl_Arr[i-1].id;
 			}
 		}
 		function sozdanie_okon_druzey()
@@ -675,11 +685,26 @@
 			game_work = false;
 		}
 		function soz_arr(){
-			mainArr["1_1"] = ["Герои какого фильма на фото?", "Друзья", "Форсаж", "Большая разборка", "Теория большого взрыва", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_1.jpg"];
-			mainArr["1_2"] = ["Кадр со съемок какого фильма?", "Клоун", "Монстр", "Оно", "Атракцион", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_2.jpg"];
-			mainArr["1_3"] = ["Кто ходил под гримом в фильме Маска?", "Марлон Брандо", "Джим Керри", "Вэл Килмер", "Джаред Батлер", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_3.jpg"];
-			mainArr["1_4"] = ["Актерский состав какого фильма?", "Пятый элемент", "Убить Билла", "Криминальное Чтиво", "Без Лица", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_4.jpg"];
-			mainArr["1_5"] = ["Этого актера в фильме Мстители Эра Альтрона мы не увидели но слышали его голос. Кто это?", "Крис Хемсворт", "Элизабет Олсен", "Аарон Тейлор-Джонсон", "Джеймс Спейдер", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_5.jpg"];
+mainArr["1_1"] = ["Герои какого фильма на фото?", "Друзья", "Форсаж", "Большая разборка", "Теория большого взрыва", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_1.jpg"]; //Форсаж
+mainArr["1_2"] = ["Кадр со съемок какого фильма?", "Клоун", "Монстр", "Оно", "Атракцион", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_2.jpg"]; //Оно
+mainArr["1_3"] = ["Кто ходил под гримом в фильме Маска?", "Марлон Брандо", "Джим Керри", "Вэл Килмер", "Джаред Батлер", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_3.jpg"]; //Джим Керри
+mainArr["1_4"] = ["Актерский состав какого фильма?", "Пятый элемент", "Убить Билла", "Криминальное Чтиво", "Без Лица", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_4.jpg"]; //Криминальное Чтиво
+mainArr["1_5"] = ["Этого актера в фильме Мстители Эра Альтрона мы не увидели но слышали его голос. Кто это?", "Крис Хемсворт", "Элизабет Олсен", "Аарон Тейлор-Джонсон", "Джеймс Спейдер", "http://vevsksenon.xyz/kinoman/foto_kinoman/1_5.jpg"]; //Джеймс Спейдер
+mainArr["2_1"] = ["На какой планете были наедены яйца с лицехватами из фильма Чужой?", "RBD-204", "Юпитер", "LV-426", "Пандора", "http://vevsksenon.xyz/kinoman/foto_kinoman/2_1.jpg"]; //LV-426
+mainArr["2_2"] = ["Кем являлся Ле Шиффр в фильме казино рояль?", "Ученым в области физики", "человек с паранормальными способностями", "тайный банкир", "маньяк террорист", "http://vevsksenon.xyz/kinoman/foto_kinoman/2_2.jpg"]; //тайный банкир
+mainArr["2_3"] = ["В каком году вышел фильм Люди икс?", "1998", "2001", "1999", "2000", "http://vevsksenon.xyz/kinoman/foto_kinoman/2_3.jpg"]; //2000
+mainArr["2_4"] = ["какой фильм на кадре?", "Бессоница", "В пути", "Жизнь Дэвида Гейла", "Священный дым", "http://vevsksenon.xyz/kinoman/foto_kinoman/2_4.jpg"]; //Жизнь Дэвида Гейла
+mainArr["2_5"] = ["Назовите режиссера фильма \"Семь\"?", "Дэвид Кроненберг", "Рон Ховард", "Дэвид Финчер", "Пол Хоган", "http://vevsksenon.xyz/kinoman/foto_kinoman/2_5.jpg"]; //Дэвид Финчер
+mainArr["3_1"] = ["В каком году прибыл терминатор убить Сару Коннор?", "1978", "1988", "1981", "1984", "http://vevsksenon.xyz/kinoman/foto_kinoman/3_1.jpg"]; //1984
+mainArr["3_2"] = ["В каком городе вырос Брюс Уэйн?", "Метрополис", "Сан-Франциско", "Чикаго", "Готэм", "http://vevsksenon.xyz/kinoman/foto_kinoman/3_2.jpg"]; //Готэм
+mainArr["3_3"] = ["Кому принадлежит фраза-\"Ладно, беру тебя. Тебя не возьму — ты страшный\"?", "Джокер", "Грю", "Капитан Джек-Воробей", "Лейтенант Харрис", "http://vevsksenon.xyz/kinoman/foto_kinoman/3_3.jpg"]; //Капитан Джек-Воробей
+mainArr["3_4"] = ["Кого первоначально приглашали на роль хищника?", "Вэл Килмер", "Игги Поп", "Жан-Клод Ван Дамм", "Халк Хоган", "http://vevsksenon.xyz/kinoman/foto_kinoman/3_4.jpg"]; //Жан-Клод Ван Дамм
+mainArr["3_5"] = ["Первое появление Киану Ривза на большом экране?", "Отпуская", "Молодая кровь", "На берегу реки", "Дракула", "http://vevsksenon.xyz/kinoman/foto_kinoman/3_5.jpg"]; //Молодая кровь
+mainArr["4_1"] = ["Как звали главного антагониста в фильме Кобра?", "Филип Моррис", "Стив Фишер", "Майкл Майерс", "Найт Слэшер", "http://vevsksenon.xyz/kinoman/foto_kinoman/4_1.jpg"]; //Найт Слэшер
+mainArr["4_2"] = ["Какой кино-маньяк убивал людей во снах?", "Леприкон", "Леший", "Реаниматор", "Фрэди Крюгер", "http://vevsksenon.xyz/kinoman/foto_kinoman/4_2.jpg"]; //Фрэди Крюгер
+mainArr["4_3"] = ["Какой фильм Роберта Земекиса вышел в 1997 году?", "Форест Гамп", "Контакт", "Изгой", "Что скрывает ложь", "http://vevsksenon.xyz/kinoman/foto_kinoman/4_3.jpg"]; //Контакт
+mainArr["4_4"] = ["Как называлось вирусное оружие в фильме Скала?", "СОСl2", "13FF", "Ebolavirus", "VX", "http://vevsksenon.xyz/kinoman/foto_kinoman/4_4.jpg"]; //VX
+mainArr["4_5"] = ["В каком году был создан Оскар для поощрения деятелей кино?", "1929", "1920", "1910", "1940", "http://vevsksenon.xyz/kinoman/foto_kinoman/4_5.jpg"]; //1929
 		}
 		
 	}

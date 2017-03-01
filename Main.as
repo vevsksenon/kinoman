@@ -29,6 +29,7 @@
 		var bar_reit:MovieClip = new bar4();//Иконка ейтинга
 
 		var back:MovieClip = new back_ground();//фон
+		//проверка связи
 
 		var mainMenuLayer:Sprite = new Sprite();//основной слой главного меню
 		var friendsLayer:Sprite = new Sprite();//слой с иконками друзей

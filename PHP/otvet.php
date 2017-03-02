@@ -32,11 +32,14 @@ if (!$ID_VK && !$LVL && !$NOMER && !$OTVET){
 }
 
 //Проверяем ответ на правильность
-    $q="SELECT * FROM otvet where lvl,pravilno in ('$LVL'.'$NOMER','$OTVET')";
+    $LVLN = $LVL.$NOMER;
+    $q="SELECT * FROM otvet where lvl = $LVLN AND pravilno = '$OTVET'";
 	$z="insert into rounds(id,lvl,nomer,count) values ('$ID_VK', '$LVL', '$NOMER', '5')";
 	$z2="insert into rounds(id,lvl,nomer,count) values ('$ID_VK', '$LVL', '$NOMER', '1')";
 	$zz="UPDATE rounds SET count = 5 WHERE id=$ID_VK, lvl=$LVL, nomer=$NOMER"; 
 	$zz2="UPDATE rounds SET count = 1 WHERE id=$ID_VK, lvl=$LVL, nomer=$NOMER"; 
+	
+	
 	
     $result = mysqli_query($link,$q);
 	if ($result){

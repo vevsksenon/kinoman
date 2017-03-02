@@ -214,7 +214,7 @@
 				 
 				 _t = _tmax;
 				 _time.TF.text = (_t);
-				 otvetArr[vopros] = e.target.TF1.text;
+				 zapros_otvet(_id, uroven, vopros, e.target.TF1.text, zapros_otvet_fc , zapros_otvet_fc_e);
 				 vopros++;
 				 
 				 if (vopros > 5 && game_work == true){
@@ -328,7 +328,38 @@
 			pictLdr.contentLoaderInfo.removeEventListener(Event.COMPLETE, imgLoaded);
 			pictLdr.contentLoaderInfo.removeEventListener(Event.ERROR, imgLoaded_e);
 		}
-		
+		function zapros_otvet(id_vk:int, lvl:int, nomer:int, otvet:String, COMPLETE:Function , ERROR:Function){ //функция проверки наличия игрока в БД
+			vars = new URLVariables;                                                                                                    
+			vars['id'] = id_vk;
+			vars['lvl'] = lvl;
+			vars['nomer'] = nomer;
+			vars['otvet'] = otvet;
+			
+			request = new URLRequest("http://vevsksenon.xyz/kinoman/PHP/otvet.php"); //путь к скрипту проверки правильности ответа и записи рейтинга
+			request.method = URLRequestMethod.POST;
+			request.data = vars;
+			
+			loader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, COMPLETE);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, ERROR);
+			loader.load(request);
+		}
+		function zapros_otvet_fc(event:Event){
+			  //результат от скрипта проверки игрока
+			 //ResultArr = event.target.data.split("-", 4);
+			 //update_bar();
+			 loader.removeEventListener(Event.COMPLETE, COMPLETE);
+			 loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+		}
+		function zapros_otvet_fc_e(event:Event){
+			mainMenuLayer.addChild(inf_window);
+			inf_window.x = 500;
+			inf_window.y = 300;
+			inf_window.TF.text = ("Ошибка соединения с БД , перезапустите приложение и проверьте наличие Интернета");
+			game_work = false;
+			loader.removeEventListener(Event.COMPLETE, COMPLETE);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+		}
 		function zapros(id_vk:int, p_name:String, p_family:String, COMPLETE:Function , ERROR:Function){ //функция проверки наличия игрока в БД
 			vars = new URLVariables;                                                                                                    
 			vars['id'] = id_vk;

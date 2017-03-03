@@ -39,11 +39,13 @@ if (!$ID_VK && !$LVL && !$NOMER && !$OTVET){
 	$zz="UPDATE rounds SET count = 5 WHERE id=$ID_VK, lvl=$LVL, nomer=$NOMER"; 
 	$zz2="UPDATE rounds SET count = 1 WHERE id=$ID_VK, lvl=$LVL, nomer=$NOMER"; 
 	
-	
+	$zap = "SELECT * FROM rounds where id = $ID_VK AND lvl = $LVL AND nomer = $NOMER AND count";
 	
     $result = mysqli_query($link,$q);
 	if ($result){
-		$result1 = mysqli_query($link,$z); //Пробуем записать +5
+		$numb1 = mysqli_fetch_row($result);
+		if ($numb1){
+			$result1 = mysqli_query($link,$z); //Пробуем записать +5
 		echo 5;
 		exit;
 		if (!$result1){
@@ -51,6 +53,9 @@ if (!$ID_VK && !$LVL && !$NOMER && !$OTVET){
 			echo 5;
 	     	exit;
 		}
+		}
+		
+		
 	}
 	if (!$result){
 		$result3 = mysqli_query($link,$z2); //Пробуем записать 0

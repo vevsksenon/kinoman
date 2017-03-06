@@ -111,6 +111,7 @@
 			stage.addEventListener(MouseEvent.MOUSE_OVER, info_over);
 			stage.addEventListener(MouseEvent.MOUSE_OUT, info_out);
 			stage.addEventListener(MouseEvent.CLICK, start_lvl);
+			stage.addEventListener(Event.ENTER_FRAME, Enter_frame_fc);
 
 			createMainMenu();
 			vk_ids();
@@ -118,6 +119,11 @@
 			
 
 			this.removeEventListener(Event.ADDED_TO_STAGE, mainInit);
+		}
+		function Enter_frame_fc(e:Event){
+			if (kartinka.currentFrame == 17 || kartinka.currentFrame == 33){
+				kartinka.gotoAndStop(1);
+			}
 		}
 		function timer_fc(){
 			if (game_work == true){
@@ -265,6 +271,7 @@
 			
 				 _time.TF.text = (_t);
 				 //неправильный ответ отправить на сервер
+				 zapros_otvet(_id, uroven, vopros, "Нет ответа", zapros_otvet_fc , zapros_otvet_fc_e);
 				 vopros++;
 				 
 				 if (vopros > 5){
@@ -345,6 +352,12 @@
 			loader.load(request);
 		}
 		function zapros_otvet_fc(event:Event){
+			if (event.target.data == 0){
+				kartinka.gotoAndPlay(18);
+			}
+			else if (event.target.data == 5){
+				kartinka.gotoAndPlay(2);
+			}
 			  //результат от скрипта проверки игрока
 			 //ResultArr = event.target.data.split("-", 4);
 			 //update_bar();

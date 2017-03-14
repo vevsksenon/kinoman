@@ -46,6 +46,7 @@
 		var drugObjectArr:Array = new Array();//массив со ссылками на объекты друзей
 		var ResultArr:Array = new Array();//Массив с накоплениями
 		var lvl_Arr:Array = new Array();//Массив иконок уровней
+		var ReitingArr:Array = new Array();//Массив рейтинга по уровням
 
 		var _step = 120;// ширина на которую будет двигаться лента друзей
 		var kol_drug = 0;//количество друзей для ограничения передвижения ленты друзей
@@ -121,7 +122,7 @@
 			this.removeEventListener(Event.ADDED_TO_STAGE, mainInit);
 		}
 		function Enter_frame_fc(e:Event){
-			if (kartinka.currentFrame == 17 || kartinka.currentFrame == 33){
+			if (kartinka.currentFrame == 30 || kartinka.currentFrame == 60){
 				kartinka.gotoAndStop(1);
 			}
 		}
@@ -224,6 +225,7 @@
 				 vopros++;
 				 
 				 if (vopros > 5 && game_work == true){
+					 zapros_reitinga(_id, lvl_player, zapros_reitinga_fc1, zapros_reitinga_fc_e);
 					 proverka_lvl();
 					 //отправка результатов ответов на сервер для подсчёта рейтинга и получения результатов
 					     if (foto_btn.visible == false){
@@ -276,6 +278,7 @@
 				 
 				 if (vopros > 5){
 					 //отправка результатов ответов на сервер для подсчёта рейтинга и получения результатов
+					 zapros_reitinga(_id, lvl_player, zapros_reitinga_fc1, zapros_reitinga_fc_e);
 					     if (foto_btn.visible == false && game_work == true){
 						 foto_btn.visible = true;
 						 }
@@ -353,7 +356,7 @@
 		}
 		function zapros_otvet_fc(event:Event){
 			if (event.target.data == 0){
-				kartinka.gotoAndPlay(18);
+				kartinka.gotoAndPlay(31);
 			}
 			else if (event.target.data == 5){
 				kartinka.gotoAndPlay(2);
@@ -365,6 +368,91 @@
 			 loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
 		}
 		function zapros_otvet_fc_e(event:Event){
+			mainMenuLayer.addChild(inf_window);
+			inf_window.x = 500;
+			inf_window.y = 300;
+			inf_window.TF.text = ("Ошибка соединения с БД , перезапустите приложение и проверьте наличие Интернета");
+			game_work = false;
+			loader.removeEventListener(Event.COMPLETE, COMPLETE);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+		}
+		function zapros_reitinga(id_vk:int, lvl:int, COMPLETE:Function , ERROR:Function){ //функция проверки рейтинга по уровням
+			vars = new URLVariables;                                                                                                    
+			vars['id'] = id_vk;
+			vars['lvlmax'] = lvl;
+			
+			
+			request = new URLRequest("http://vevsksenon.xyz/kinoman/PHP/reiting.php"); //путь к скрипту проверки рейтинга по уровням
+			request.method = URLRequestMethod.POST;
+			request.data = vars;
+			
+			loader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, COMPLETE);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, ERROR);
+			loader.load(request);
+		}
+		function zapros_reitinga_fc(event:Event){
+			  //результат от скрипта проверки игрока
+			 ReitingArr = event.target.data.split("_",  lvl_player);
+			 //update_bar();
+			 sozdanie_lvl();
+			 loader.removeEventListener(Event.COMPLETE, COMPLETE);
+			 loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+		}
+		function zapros_reitinga_fc1(event:Event){
+			  //результат от скрипта проверки игрока
+			 ReitingArr = event.target.data.split("_",  lvl_player);
+			 
+			 for (var i = 1; i <= lvl_player; i++){
+				if (ReitingArr[i-1] == 0){
+					       lvl_Arr[i-1].z1.gotoAndStop(1); 
+						   lvl_Arr[i-1].z2.gotoAndStop(1);
+						   lvl_Arr[i-1].z3.gotoAndStop(1);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 5){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(1);
+						   lvl_Arr[i-1].z3.gotoAndStop(1);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 10){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(1);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 15){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(2);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 20){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(2);
+						   lvl_Arr[i-1].z4.gotoAndStop(2);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 25){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(2);
+						   lvl_Arr[i-1].z4.gotoAndStop(2);
+						   lvl_Arr[i-1].z5.gotoAndStop(2);
+				}
+				
+			}
+			 
+			 loader.removeEventListener(Event.COMPLETE, COMPLETE);
+			 loader.removeEventListener(IOErrorEvent.IO_ERROR, ERROR);
+		}
+		function zapros_reitinga_fc_e(event:Event){
 			mainMenuLayer.addChild(inf_window);
 			inf_window.x = 500;
 			inf_window.y = 300;
@@ -447,7 +535,7 @@
 			bar_lvl.TFL.text = ResultArr[2];
 			lvl_player = ResultArr[2];
 			bar_reit.TF.text = ResultArr[3];
-			sozdanie_lvl();
+			zapros_reitinga(_id, lvl_player, zapros_reitinga_fc, zapros_reitinga_fc_e);
 		}
 		function info_over(e:MouseEvent)
 		{
@@ -575,6 +663,48 @@
 				lvl_Arr[i-1].x = 100 + (150*q);
 				lvl_Arr[i-1].y = 160 + (87*j);
 				lvl_Arr[i-1].TF.text = i;
+				if (ReitingArr[i-1] == 0){
+					       lvl_Arr[i-1].z1.gotoAndStop(1); 
+						   lvl_Arr[i-1].z2.gotoAndStop(1);
+						   lvl_Arr[i-1].z3.gotoAndStop(1);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 5){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(1);
+						   lvl_Arr[i-1].z3.gotoAndStop(1);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 10){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(1);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 15){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(2);
+						   lvl_Arr[i-1].z4.gotoAndStop(1);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 20){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(2);
+						   lvl_Arr[i-1].z4.gotoAndStop(2);
+						   lvl_Arr[i-1].z5.gotoAndStop(1);
+				}
+				if (ReitingArr[i-1] == 25){
+					       lvl_Arr[i-1].z1.gotoAndStop(2); 
+						   lvl_Arr[i-1].z2.gotoAndStop(2);
+						   lvl_Arr[i-1].z3.gotoAndStop(2);
+						   lvl_Arr[i-1].z4.gotoAndStop(2);
+						   lvl_Arr[i-1].z5.gotoAndStop(2);
+				}
 				q++;
 				if (i%5 == 0 && i !==0){
 					j++;
@@ -587,7 +717,9 @@
 				lvl_Arr[i-1].gotoAndStop(2);
 				lvl_Arr[i-1].TF.mouseEnabled = false;
 				lvl_Arr[i-1].TF.text = lvl_Arr[i-1].id;
+				
 			}
+			
 		}
 		function sozdanie_okon_druzey()
 		{

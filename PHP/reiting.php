@@ -2,8 +2,8 @@
 
 //принимаем переменные от нашего клиентского приложени¤ через метод передачи данных POST
 
-$ID_VK = 56494331;
-$LVLMAX = 7;
+$ID_VK = $_POST['id'];
+$LVLMAX = $_POST['lvlmax'];
 
 
 //Соединяемся , выбираем базу данных
@@ -29,7 +29,6 @@ if (!$ID_VK && !$LVLMAX){
     printf("Не переданы все значения");
     exit;
 }
-$teclvl = 1;
 $q="SELECT lvl, sum(count) FROM rounds GROUP BY lvl ORDER BY lvl";
 
    
@@ -42,6 +41,8 @@ $q="SELECT lvl, sum(count) FROM rounds GROUP BY lvl ORDER BY lvl";
             }
     
 		}
+    
+    
 	
 mysqli_close($link);
 ?>

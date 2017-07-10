@@ -34,10 +34,10 @@ if (!$ID_VK && !$LVL && !$NOMER && !$OTVET){
 //Проверяем ответ на правильность
     $LVLN = $LVL.$NOMER;
     $q="SELECT * FROM otvet where lvl = $LVLN AND pravilno = '$OTVET'";
-	$q2="SELECT * FROM rounds where id = $ID_VK AND lvl = $LVL AND nomer = $NOMER";
 	$z="insert into rounds(id,lvl,nomer,count) values ('$ID_VK', '$LVL', '$NOMER', '5')";
-	$z2="insert into rounds(id,lvl,nomer,count) values ('$ID_VK', '$LVL', '$NOMER', '0')";
-	$zz="DELETE FROM rounds  WHERE id = $ID_VK AND lvl = $LVL AND nomer = $NOMER";  
+	$z2="insert into rounds(id,lvl,nomer,count) values ('$ID_VK', '$LVL', '$NOMER', '1')";
+	$zz="UPDATE rounds SET count = 5 WHERE id=$ID_VK, lvl=$LVL, nomer=$NOMER"; 
+	$zz2="UPDATE rounds SET count = 1 WHERE id=$ID_VK, lvl=$LVL, nomer=$NOMER"; 
 	
 	$zap = "SELECT * FROM rounds where id = $ID_VK AND lvl = $LVL AND nomer = $NOMER AND count";
 	
@@ -45,46 +45,30 @@ if (!$ID_VK && !$LVL && !$NOMER && !$OTVET){
 	if ($result){
 		$numb1 = mysqli_fetch_row($result);
 		if ($numb1){
-			$result1 = mysqli_query($link,$q2); //Проверяем есть ли запись про этот уровень в БД
-			$numb2 = mysqli_fetch_row($result1);
-			if ($numb2){
-				$result2 = mysqli_query($link,$zz);
-				if ($result2){
-					$result3 = mysqli_query($link,$z);
-				    echo 5;
-				    exit;
-				}
-				
-			}
-            if (!$numb2){
-				$result3 = mysqli_query($link,$z);
-				echo 5;
-				exit;
-			}				
-	    }
-		else if (!$numb1){
-			$result1 = mysqli_query($link,$q2); //Проверяем есть ли запись про этот уровень в БД
-			$numb2 = mysqli_fetch_row($result1);
-			if ($numb2){
-				$result2 = mysqli_query($link,$zz);
-				if ($result2){
-					$result3 = mysqli_query($link,$z2);
-				    echo 0;
-				    exit;
-				}
-				
-			}
-            if (!$numb2){
-				$result2 = mysqli_query($link,$z2);
-				echo 0;
-				exit;
-			}		
+			$result1 = mysqli_query($link,$z); //Пробуем записать +5
+		echo 5;
+		exit;
+		if (!$result1){
+			$result2 = mysqli_query($link,$zz);//Пробуем обновить +5
+			echo 5;
+	     	exit;
 		}
-			
+		}
 		
 		
 	}
-	
+	if (!$result){
+		$result3 = mysqli_query($link,$z2); //Пробуем записать 0
+		if ($result3){
+			echo 0;
+	     	exit;
+		}
+		if (!$result3){
+			$result4 = mysqli_query($link,$zz2); //Пробуем обновить 0
+			echo 0;
+	     	exit;
+		}
+	}
 	
 	
 	
